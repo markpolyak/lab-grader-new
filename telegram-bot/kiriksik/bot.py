@@ -7,15 +7,16 @@ import requests
 import json
 from datetime import datetime
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+from config import token, adviser
 
-cred_file = "forward-adviser-427610-r2-c8a1270f5774.json"
+cred_file = adviser
 
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 creds = ServiceAccountCredentials.from_json_keyfile_name(cred_file, scope)
 
 client = gspread.authorize(creds)
 
-bot = telebot.TeleBot('7052793398:AAELaXu-3W_BCcJ2D5uaY3WH-_MhQft94rA')
+bot = telebot.TeleBot(token)
 
 user = {}
 group = {}
@@ -397,7 +398,7 @@ def name(message):
         name = names[0]
         surname = names[1]
         if names.get(2) is not None:
-            patr = names [2]
+            patr = names[2]
         else:
             patr = ''
         # json_response = requests.post(f'{http_start}/courses/{domain[message.from_user.id]}/groups/{group[message.from_user.id]}/register', json={'name': f'{name}', 'surname' : f'{surname}', 'patronymic' : f'{patr}', 'github' : f'{git[message.from_user.id]}'})
