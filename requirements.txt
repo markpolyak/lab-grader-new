@@ -1,0 +1,7 @@
+uvicorn
+python-docx
+fastapi
+pydantic
+PyYAML
+gspread
+oauth2client
