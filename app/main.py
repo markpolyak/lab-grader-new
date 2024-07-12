@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from typing import Optional
 import os
 import logging
+from datetime import datetime
 
 from app.config_loader import load_all_configs, load_config
 from app.google_sheets import find_student
@@ -50,7 +51,7 @@ class ReportRequest(BaseModel):
 @app.post("/courses/{course_id}/groups/{group_id}/labs/{lab_id}/template")
 async def get_lab_template(course_id: str, group_id: str, lab_id: str, format: str, report_request: ReportRequest):
     logger.info(f"Received request: {report_request}")
-    if format not in ["docx", "odf", "latex"]:
+    if format not in ["docx"]:
         raise HTTPException(status_code=400, detail="Invalid format")
 
     course = next((course for course in courses if course["id"] == course_id), None)
@@ -91,7 +92,7 @@ def generate_template(config, lab_id, format, student, reviewer, group_id):
             '*course name*': config.course.alt_names[1],
             '*student group number*': group_id,
             '*initials*': get_initials(student.get('Ф.И.О.', '')),
-            '*year*': config.course.semester.split()[1]
+            '*year*': str(datetime.now().year)
         }
 
         # Функция для замены текста в параграфах
