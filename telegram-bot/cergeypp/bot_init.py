@@ -7,7 +7,8 @@ from filters.course_filter import CoursesCallbackFilter
 from filters.groups_filter import GroupsCallbackFilter
 from filters.lab_filter import LabsCallbackFilter
 
-TOKEN = '7487310076:AAHOTcAwRYLmyb2iJvM2vorhLRNP9jjjLDA'
+from config import bot_token
+TOKEN = bot_token
 bot = AsyncTeleBot(TOKEN, state_storage=StateMemoryStorage())
 
 commands=[

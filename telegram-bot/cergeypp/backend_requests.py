@@ -1,6 +1,7 @@
 import requests
+from config import server_url
 
-address = "http://localhost:8000"
+address = server_url
 
 def get_courses():
     return requests.get(address + "/courses")
