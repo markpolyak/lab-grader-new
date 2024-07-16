@@ -74,6 +74,7 @@ async def get_lab_template(course_id: str, group_id: str, lab_id: str, format: s
     template = generate_template(config, lab_id, format, student, report_request.reviewer, group_id)
 
     file_stream = io.BytesIO()
+
     if (format == 'latex' or format == 'tex'):
         format = "tex"
         file_stream.write(template.encode('utf-8'))
@@ -141,11 +142,6 @@ def generate_template(config, lab_id, format, student, reviewer, group_id):
         for heading in config.course.labs[lab_id].report:
             document.add_heading(heading + ":" + "\n", level=1)
 
-        # Сохранение нового документа
-        # file_extension = 'docx'
-        # filename = f"lab_report_{student['GitHub']}_{lab_id}.{file_extension}"
-        # filepath = os.path.join("templates", filename)
-        # document.save(filepath)
     elif (format == 'odt' or format == 'odf'):
 
         template_path = "templates/title_page.odt"
@@ -167,6 +163,7 @@ def generate_template(config, lab_id, format, student, reviewer, group_id):
                     texts[i].parentNode.removeChild(texts[i])
                     print(f"replaced: {marked_text} --> {value}")
 
+        # Добавление заголовков заданий
         for heading in config.course.labs[lab_id].report:
             new_Line = text.H(outlinelevel=2)
             new_Line.addText(heading + ":")
@@ -177,6 +174,7 @@ def generate_template(config, lab_id, format, student, reviewer, group_id):
         with open(os.path.join(BASE_DIR, 'templates', 'template.tex'), 'r', encoding='utf-8') as file:
             latex_template = file.read()
 
+        # Замена значений в документе
         latex_template = latex_template.replace('%%REVIEWER_TITLE%%', reviewer.title)
         latex_template = latex_template.replace('%%REVIEWER_NAME%%', get_initials(reviewer.name))
         latex_template = latex_template.replace('%%LAB_NUMBER%%', lab_id)
@@ -184,12 +182,13 @@ def generate_template(config, lab_id, format, student, reviewer, group_id):
         latex_template = latex_template.replace('%%GROUP_ID%%', group_id)
         latex_template = latex_template.replace('%%STUDENT_NAME%%', get_initials(student.get('Ф.И.О.', '')))
 
+        # Добавление заголовков заданий
         report_headers_text = '\n'.join(f'\\subsection*{{{heading}}}' for heading in config.course.labs[lab_id].report)
         latex_template = latex_template.replace('%%REPORT_HEADERS%%', report_headers_text)
 
         return latex_template
     else:
-        # Обработка форматов odf и latex если это необходимо
+        # Обработка остальных форматов, если это необходимо
         raise HTTPException(status_code=400, detail="Unsupported format")
 
     return document
