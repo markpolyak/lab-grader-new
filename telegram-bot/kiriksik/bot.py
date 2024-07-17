@@ -3,6 +3,7 @@ import time
 
 import telebot
 import requests
+import re
 import json
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import token, http_st
@@ -105,6 +106,18 @@ def deny(message):
 
 @bot.message_handler(commands=['Авторизация', 'авторизация', 'auth', 'Auth', 'start', 'Start'])
 def start(message):
+    global domain
+    global fio
+    global group
+    global group_id
+    global git
+    global lab
+    del group[message.from_user.id]
+    del group_id[message.from_user.id]
+    del fio[message.from_user.id]
+    del git[message.from_user.id]
+    del domain[message.from_user.id]
+    del lab[message.from_user.id]
     if message.from_user.last_name:
         mess = f'Привет, <b>{message.from_user.first_name} {message.from_user.last_name}</b>! Выбери свой предмет:'
     else:
@@ -153,22 +166,29 @@ def callback_query(call):
 
     elif group.get(call.from_user.id) is None:
         try:
-            group[call.from_user.id] = call.data
-            response_text = f"Выбрана группа: {group[call.from_user.id]}. Выберите лабораторную работу:"
-            js = '''
-                ["ЛР0", "ЛР1", "ЛР2", "ЛР3"]
-            '''
-            key = create_butt_from_url(f"{http_start}"
-                                       f"/courses/domain[call.from_user.id]/groups/group[call.from_user.id]/labs",
-                                       call.from_user.id, 'labs', js)
-            bot.send_message(call.message.chat.id, response_text, parse_mode='html', reply_markup=key)
+            numbers = re.findall(r'\d+', call.data)
+            if int(numbers[0]) > 101:
+                group[call.from_user.id] = call.data
+                response_text = f"Выбрана группа: {group[call.from_user.id]}. Выберите лабораторную работу:"
+                js = '''
+                    ["ЛР0", "ЛР1", "ЛР2", "ЛР3"]
+                '''
+                key = create_butt_from_url(f"{http_start}"
+                                           f"/courses/domain[call.from_user.id]/groups/group[call.from_user.id]/labs",
+                                           call.from_user.id, 'labs', js)
+                bot.send_message(call.message.chat.id, response_text, parse_mode='html', reply_markup=key)
+            else:
+                raise Exception
         except:
             response_text = f"Произошла ошибка при выборе группы. Проверьте корректность ваших действий"
             bot.send_message(call.message.chat.id, response_text, parse_mode='html')
     elif fio.get(call.from_user.id) is None:
         try:
-            lab[call.from_user.id] = call.data
-            response_text = f"Выбрана лабораторная: {lab[call.from_user.id]}. Введите ваше ФИО:"
+            if "ЛР" in call.data:
+                lab[call.from_user.id] = call.data
+                response_text = f"Выбрана лабораторная: {lab[call.from_user.id]}. Введите ваше ФИО:"
+            else:
+                raise Exception
             bot.send_message(call.message.chat.id, response_text, parse_mode='html')
         except:
             response_text = f"Произошла ошибка при выборе лабораторной. Проверьте корректность ваших действий"
@@ -176,15 +196,19 @@ def callback_query(call):
 
     else:
         try:
-            lab[call.from_user.id] = call.data
-            response_text = f"Выбрана лабораторная: {lab[call.from_user.id]}."
-            bot.send_message(call.message.chat.id, response_text, parse_mode='html')
-            js = '''
-                {"message": "Сообщение о проверке лр"}
-            '''
-            answer = check_lab(lab[call.from_user.id], git[call.from_user.id], call.from_user.id, js)
-            response_text = f"Здравствуй, {fio[call.from_user.id]}. Лабораторная проверена. Результат: {answer}"
-            bot.send_message(call.message.chat.id, response_text, parse_mode='html')
+            numbers = re.findall(r'\d+', call.data)
+            if int(numbers[0]) > 101:
+                lab[call.from_user.id] = call.data
+                response_text = f"Выбрана лабораторная: {lab[call.from_user.id]}."
+                bot.send_message(call.message.chat.id, response_text, parse_mode='html')
+                js = '''
+                    {"message": "Сообщение о проверке лр"}
+                '''
+                answer = check_lab(lab[call.from_user.id], git[call.from_user.id], call.from_user.id, js)
+                response_text = f"Здравствуй, {fio[call.from_user.id]}. Лабораторная проверена. Результат: {answer}"
+                bot.send_message(call.message.chat.id, response_text, parse_mode='html')
+            else:
+                raise Exception
         except:
             response_text = f"Произошла ошибка. Проверьте корректность ваших действий"
             bot.send_message(call.message.chat.id, response_text, parse_mode='html')
@@ -237,7 +261,7 @@ def name(message):
         json_response = response = Resp(200, js)
         data = json_response.json #()
         answ = json.loads(data)
-        if json_response.status_code == 200:
+        if json_response.status_code == 200 or json_response.status_code == 202:
             response_text = f"{answ['message']}"
             bot.send_message(message.chat.id, response_text, parse_mode='html')
             js = '''
@@ -259,3 +283,4 @@ while True:
         bot.polling(none_stop=True)
     except:
         time.sleep(10)
+
