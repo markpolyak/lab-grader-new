@@ -94,17 +94,17 @@ def deny(message):
     global group_id
     global git
     global lab
-    if group.get(message.from_user.id) is None:
+    if group.get(message.from_user.id) is not None:
         del group[message.from_user.id]
-    if group_id.get(message.from_user.id) is None:
+    if group_id.get(message.from_user.id) is not None:
         del group_id[message.from_user.id]
-    if fio.get(message.from_user.id) is None:
+    if fio.get(message.from_user.id) is not None:
         del fio[message.from_user.id]
-    if git.get(message.from_user.id) is None:
+    if git.get(message.from_user.id) is not None:
         del git[message.from_user.id]
-    if domain.get(message.from_user.id) is None:
+    if domain.get(message.from_user.id) is not None:
         del domain[message.from_user.id]
-    if lab.get(message.from_user.id) is None:
+    if lab.get(message.from_user.id) is not None:
         del lab[message.from_user.id]
     mess = f'Я всё забыл, повтори ка!'
     bot.send_message(message.chat.id, mess, parse_mode='html')
@@ -118,17 +118,17 @@ def start(message):
     global group_id
     global git
     global lab
-    if group.get(message.from_user.id) is None:
+    if group.get(message.from_user.id) is not None:
         del group[message.from_user.id]
-    if group_id.get(message.from_user.id) is None:
+    if group_id.get(message.from_user.id) is not None:
         del group_id[message.from_user.id]
-    if fio.get(message.from_user.id) is None:
+    if fio.get(message.from_user.id) is not None:
         del fio[message.from_user.id]
-    if git.get(message.from_user.id) is None:
+    if git.get(message.from_user.id) is not None:
         del git[message.from_user.id]
-    if domain.get(message.from_user.id) is None:
+    if domain.get(message.from_user.id) is not None:
         del domain[message.from_user.id]
-    if lab.get(message.from_user.id) is None:
+    if lab.get(message.from_user.id) is not None:
         del lab[message.from_user.id]
     if message.from_user.last_name:
         mess = f'Привет, <b>{message.from_user.first_name} {message.from_user.last_name}</b>! Выбери свой предмет:'
@@ -208,8 +208,7 @@ def callback_query(call):
 
     else:
         try:
-            numbers = re.findall(r'\d+', call.data)
-            if int(numbers[0]) > 101:
+            if "ЛР" in call.data:
                 lab[call.from_user.id] = call.data
                 response_text = f"Выбрана лабораторная: {lab[call.from_user.id]}."
                 bot.send_message(call.message.chat.id, response_text, parse_mode='html')
@@ -294,4 +293,4 @@ while True:
     try:
         bot.polling(none_stop=True)
     except:
-        time.sleep(10)
+        time.sleep(15)

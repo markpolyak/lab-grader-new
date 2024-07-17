@@ -8,3 +8,8 @@
 Так же в файле config.py должны быть две переменные:
 1. token - строка, в которой храниться токен телеграмм бота
 2. http_st - базовый url для подключения к бэкэнду
+***
+Для запуска докер-контейнера с ботом:
+1. sudo docker build -t suai_check_bot .
+2. sudo docker run -d --name suaibot suai_check_bot
+
