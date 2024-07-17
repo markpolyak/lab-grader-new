@@ -1,0 +1,15 @@
+courses_dir: "courses"
+
+# Google
+google:
+  credentials_file: "credentials.json"
+  token_file: "token.json"
+  labs_range: "C1:AA2"
+  students_range: "B3:B43"
+  headers_range: "A1:BA1"
+  github_header: "GitHub"
+
+
+# Github
+github:
+  token: "YOUR_GITHUB_TOKEN"
