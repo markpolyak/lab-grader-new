@@ -86,7 +86,7 @@ def create_keyboard_from_json(json_string, name_json):
     #     return keyboard
 
 
-@bot.message_handler(commands=['Отмена', 'отмена', 'cansel'])
+@bot.message_handler(commands=['Отмена', 'отмена', 'cancel'])
 def deny(message):
     global domain
     global fio
@@ -94,12 +94,18 @@ def deny(message):
     global group_id
     global git
     global lab
-    del group[message.from_user.id]
-    del group_id[message.from_user.id]
-    del fio[message.from_user.id]
-    del git[message.from_user.id]
-    del domain[message.from_user.id]
-    del lab[message.from_user.id]
+    if group.get(message.from_user.id) is None:
+        del group[message.from_user.id]
+    if group_id.get(message.from_user.id) is None:
+        del group_id[message.from_user.id]
+    if fio.get(message.from_user.id) is None:
+        del fio[message.from_user.id]
+    if git.get(message.from_user.id) is None:
+        del git[message.from_user.id]
+    if domain.get(message.from_user.id) is None:
+        del domain[message.from_user.id]
+    if lab.get(message.from_user.id) is None:
+        del lab[message.from_user.id]
     mess = f'Я всё забыл, повтори ка!'
     bot.send_message(message.chat.id, mess, parse_mode='html')
 
@@ -112,12 +118,18 @@ def start(message):
     global group_id
     global git
     global lab
-    del group[message.from_user.id]
-    del group_id[message.from_user.id]
-    del fio[message.from_user.id]
-    del git[message.from_user.id]
-    del domain[message.from_user.id]
-    del lab[message.from_user.id]
+    if group.get(message.from_user.id) is None:
+        del group[message.from_user.id]
+    if group_id.get(message.from_user.id) is None:
+        del group_id[message.from_user.id]
+    if fio.get(message.from_user.id) is None:
+        del fio[message.from_user.id]
+    if git.get(message.from_user.id) is None:
+        del git[message.from_user.id]
+    if domain.get(message.from_user.id) is None:
+        del domain[message.from_user.id]
+    if lab.get(message.from_user.id) is None:
+        del lab[message.from_user.id]
     if message.from_user.last_name:
         mess = f'Привет, <b>{message.from_user.first_name} {message.from_user.last_name}</b>! Выбери свой предмет:'
     else:
@@ -283,4 +295,3 @@ while True:
         bot.polling(none_stop=True)
     except:
         time.sleep(10)
-
