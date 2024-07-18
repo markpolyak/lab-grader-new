@@ -1,0 +1,10 @@
+fastapi
+pydantic
+PyYAML
+gspread
+google-auth-oauthlib
+google-auth
+google-api-python-client
+httpx
+pytz
+uvicorn
