@@ -1,0 +1,66 @@
+course:
+    name: Машинное обучение на языке Python
+    alt-names: 
+        - MLwP
+        - Machine Learning with Python
+        - МЛнЯP
+    semester: 3-ий модуль 2022
+    email: mpolyak@hse.ru
+    timezone: MSK
+    github:
+        organization: hse-mlwp-2022
+        teachers:
+            - "Mark Polyak"
+            - markpolyak
+    google:
+        spreadsheet: 1ekhexbp0o6OkjEvpi0fQxQ8uwGYKYPzmkJ3tWjNXycI
+        info-sheet: Info
+        task-id-column: 0
+        student-name-column: 1
+        lab-column-offset: 8
+    labs:
+        "1":
+            github-prefix: git-intro
+            short-name: HW1
+            taskid-max: 20
+            penalty-max: 5
+            ignore-task-id: True
+            # ignore-completion-date: True
+            ci:
+                - workflows
+            files:
+                - goals.md
+                - ex2.md
+            moss:
+                language: c
+        "2":
+            github-prefix: jupyter-intro
+            short-name: HW2
+            taskid-max: 25
+            penalty-max: 6
+            ignore-task-id: True
+            ci:
+                workflows:
+                    - "Test python scripts"
+            files:
+                - jupyter_assignment.ipynb
+                - matplotlib_assignment.ipynb
+            moss:
+                language: python
+                max-matches: 100
+        "3":
+            github-prefix: hw3
+            short-name: HW3
+            taskid-max: 20
+            penalty-max: 8
+            ignore-task-id: True
+            ci:
+                - workflows
+            files:
+                - pandas_exercise.ipynb
+            moss:
+                language: python
+                max-matches: 100
+
+misc:
+    requests-timeout: 5
