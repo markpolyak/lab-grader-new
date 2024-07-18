@@ -33,11 +33,11 @@ def get_course_staff(course_id: str):
         config = load_config(os.path.join("courses", course["config"]))
         return config.course.staff
     except FileNotFoundError as e:
-        logger.error(f"File not found: {e}")
-        raise HTTPException(status_code=404, detail=str(e))
+        logger.error(f"File not found: {e.detail}")
+        raise HTTPException(status_code=404, detail=str(e.detail))
     except Exception as e:
-        logger.error(f"Error fetching course staff: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error fetching course staff: {e.detail}")
+        raise HTTPException(status_code=404, detail=str(e.detail))
 
 
 class Reviewer(BaseModel):
