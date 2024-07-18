@@ -14,7 +14,7 @@ def get_groups_by_course_id(course_id):
 
 def get_labs_by_course_and_group(course_id, group_id):
     return requests.get(address + "/courses/" + course_id + "/groups/" + group_id + "/labs")
-                         
+                    
 def register_student(course_id, group_id, student):
     return requests.post(address + "/courses/" + course_id + "/groups/" + group_id + "/register", json=student.__dict__)
 

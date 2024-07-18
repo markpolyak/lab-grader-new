@@ -5,7 +5,7 @@ from telebot import types
 
 from filters.course_filter import CoursesCallbackFilter
 from filters.groups_filter import GroupsCallbackFilter
-from filters.lab_filter import LabsCallbackFilter
+from filters.lab_filter import LabsCallbackFilter 
 
 from config import bot_token
 TOKEN = bot_token

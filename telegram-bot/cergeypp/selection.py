@@ -130,7 +130,8 @@ async def view_course_info(call):
         else:
             bot.send_message(message.chat.id, "Что-то пошло не так. Обратитесь к преподавателю")
             select_course(message)
-    except:
+    except Exception as error:
+        print(error)
         await bot.send_message(message.chat.id, "Произошла ошибка. Введите данные заново.")
         await select_course(message)
     
@@ -158,7 +159,8 @@ async def accept_course(message):
                 data['course_id'] = None
         else:
             await bot.send_message(message.chat.id, "Я не понимаю твою команду. Воспользуйся клавиатурой")
-    except:
+    except Exception as error:
+        print(error)
         await bot.send_message(message.chat.id, "Произошла ошибка. Введите данные заново.")
         await select_course(message)
 
@@ -183,7 +185,8 @@ async def select_group(call):
                 data['group_id'] = group_id
                 await bot.send_message(call.message.chat.id, 'Для смены курса и группы напишите команду /selectcourse')
                 await provide_register(call.from_user.id, call.message)
-    except:
+    except Exception as error:
+        print(error)
         await bot.send_message(call.message.chat.id, "Произошла ошибка. Введите данные заново.")
         await select_course(call.message)
 
@@ -193,7 +196,8 @@ async def provide_register(user_id, message):
                 resize_keyboard=True, one_time_keyboard=True
             ).add(types.KeyboardButton("Назад")))
         await bot.set_state(user_id, SelectionStates.surnameState, message.chat.id)
-    except:
+    except Exception as error:
+        print(error)
         await bot.send_message(message.chat.id, "Произошла ошибка. Введите данные заново.")
         await select_course(message)
     
@@ -213,17 +217,18 @@ async def invite_for_git(message):
 @bot.message_handler(state=SelectionStates.surnameState)
 async def get_surname(message):
     try:
-        if (message.text == 'Назад'):
-            if (message.chat.id in student_dict):
-                await invite_for_lab(message)
+        async with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
+            if (message.text == 'Назад'):
+                if (message.chat.id in student_dict):
+                    await invite_for_lab(data['course_id'], data['group_id'], message)
+                else:
+                    await select_course(message)
             else:
-                await select_course(message)
-        else:
-            surname = message.text
-            await invite_for_name(message)
-            async with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
+                surname = message.text
+                await invite_for_name(message)
                 data['surname'] = surname
-    except:
+    except Exception as error:
+        print(error)
         await bot.send_message(message.chat.id, "Произошла ошибка. Введите данные заново.")
         await select_course(message)
 
@@ -231,13 +236,14 @@ async def get_surname(message):
 async def get_name(message):
     try:
         if (message.text == 'Назад'):
-            await provide_register(message)
+            await provide_register(message.from_user.id, message)
         else:
             surname = message.text
             msg = await invite_for_patronymic(message)
             async with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
                 data['name'] = surname
-    except:
+    except Exception as error:
+        print(error)
         await bot.send_message(message.chat.id, "Произошла ошибка. Введите данные заново.")
         await select_course(message)
 
@@ -253,7 +259,8 @@ async def get_patronymic(message):
             msg = await invite_for_git(message)
             async with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
                 data['patronymic'] = surname
-    except:
+    except Exception as error:
+        print(error)
         await bot.send_message(message.chat.id, "Произошла ошибка. Введите данные заново.")
         await select_course(message)
 
@@ -277,7 +284,8 @@ async def get_github(message):
                 markup.add(types.KeyboardButton("Да"))
                 markup.add(types.KeyboardButton("Назад"))
                 await bot.send_message(message.chat.id, messageTemplate, reply_markup=markup)
-    except:
+    except Exception as error:
+        print(error)
         await bot.send_message(message.chat.id, "Произошла ошибка. Введите данные заново.")
         await select_course(message)
 
@@ -313,7 +321,7 @@ async def accept_register(message):
                     await select_course(message)
                 
         elif (message.text == 'Назад'):
-            await provide_register(message)
+            await provide_register(message.from_user.id,message)
             async with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
                 data['surname'] = None
                 data['name'] = None
@@ -321,7 +329,8 @@ async def accept_register(message):
                 data['git'] = None
         else:
             await bot.send_message(message.chat.id, "Я не понимаю твою команду. Воспользуйся клавиатурой")
-    except:
+    except Exception as error:
+        print(error)
         await bot.send_message(message.chat.id, "Произошла ошибка. Введите данные заново.")
         await select_course(message)
 
@@ -335,7 +344,8 @@ async def invite_for_lab(course_id, group_id, message):
             await bot.send_message(message.chat.id, "Выберите лабораторную работу для проверки", reply_markup=markup)
         else:
             await bot.send_message(message.chat.id, "Что-то пошло не так. Обратитесь к преподавателю")
-    except:
+    except Exception as error:
+        print(error)
         await bot.send_message(message.chat.id, "Произошла ошибка. Введите данные заново.")
         await select_course(message)
 
@@ -370,7 +380,8 @@ async def on_select_lab(call):
                     text = text + "\nСтатус ошибки: " + response.status_code
 
                 await bot.send_message(call.message.chat.id, text)
-    except:
+    except Exception as error:
+        print(error)
         await bot.send_message(call.message.chat.id, "Произошла ошибка. Введите данные заново.")
         await select_course(call.message)
 
