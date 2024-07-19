@@ -1,0 +1,12 @@
+[
+    {
+        "id": "1",
+        "name": "Operating System",
+        "semester": "6"
+    },
+    {
+        "id": "2",
+        "name": "DataBase",
+        "semester": "6"
+    }
+]

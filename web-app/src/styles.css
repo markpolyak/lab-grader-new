@@ -1,0 +1,92 @@
+
+body {
+  margin: 0;
+}
+.main {
+  padding: 100px;
+  background-color: rgba(8, 49, 89, 0.5);
+  font-family: 'Helvetica';
+  margin: 0;
+  min-height: 89vh;
+}
+
+.mySite {
+  background-color: #ffffff;
+  box-shadow: 10px 0 15px rgba(0, 0, 0, 0.4), -10px 0 15px rgba(0, 0, 0, 0.4); /* Добавляем тень слева и справа */
+  border-radius: 10px; /* Задаем радиус скругления углов */
+  padding: 20px;
+  text-align: justify;
+}
+
+.description {
+  margin-top: 10px;
+}
+
+button {
+  border-radius: 10px;
+  border: 0px solid #000000;
+  background-color: rgba(0, 43, 86, 0.2);
+  color: #000000;
+  min-height: 25px;
+  font-size: 16px;
+}
+button:hover {
+  background-color: #f0f0f0; /* Цвет подсветки при наведении */
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  border: 0.5px solid #000000;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.selected-border {
+  border-width: 2px;
+  border-style: solid;
+  border-color: rgba(0, 39, 83, 0.8);
+}
+
+.registerPage {
+  display: flex;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  background-color: #fff;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 8px;
+}
+
+.rightAndLeft {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.buttonOnForm {
+  margin-top: 10px;
+  width: 45%;
+  margin-right: 2.5%;
+  margin-left: 2.5%;
+}
+
+.w-60 {
+  min-width: 60%;
+}
