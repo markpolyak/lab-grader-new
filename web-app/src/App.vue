@@ -214,10 +214,7 @@ export default {
         body: JSON.stringify(registerObject)
         }
       );*/
-
-      //заменить url на url запроса с сервера бека: /courses/${this.curCourseID}/groups/${this.curGroup}/register
-
-      const response = await fetch("./afterRegister.json");
+      const response = await fetch("./afterRegister.json"); //Эту строку нужно заменить на то, что закомменчено
       const data = await response.json();
       alert(data.message);
 
@@ -239,10 +236,7 @@ export default {
         body: JSON.stringify(githubObject)
         }
       );*/
-
-      //заменить url на url запроса с сервера бека: /courses/${this.curCourseID}/groups/${this.curGroup}/labs/${this.curLab}/grade
-
-      const response = await fetch("./afterCheckingWork.json");
+      const response = await fetch("./afterCheckingWork.json"); //Эту строку нужно заменить на то, что закомменчено
       const data = await response.json();
 
       alert(data.message);
