@@ -1,0 +1,6 @@
+courses:
+  config:
+    location: "./courses"
+github:
+  login: "CMPEQ0"
+  token: "your-token"
