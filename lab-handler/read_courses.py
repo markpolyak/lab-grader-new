@@ -64,7 +64,7 @@ def get_course_groups(course_id : int):
     return names
 
 def check_group(course_id: int, group_name: str):
-    if group_name not in get_course_groups():
+    if group_name not in get_course_groups(course_id):
         raise HTTPException(status_code=404, detail="Не найдена группа")
 
 
