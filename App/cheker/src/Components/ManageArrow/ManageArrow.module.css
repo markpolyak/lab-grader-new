@@ -1,0 +1,74 @@
+.progress{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+}
+
+.desActive{
+    background-color: rgba(137, 0, 203, 0.49);
+    width: 1vw;
+    height: 1vw;
+    min-width: 10px;
+    min-height: 10px;
+    border-radius: 50%;
+}
+
+.active{
+    background-color: rgb(137, 0, 203);
+    box-shadow: 0px 0px 15px 2px rgba(191, 79, 245, 0.6);
+    width: 1vw;
+    height: 1vw;
+    min-width: 10px;
+    min-height: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.textBut{
+    box-shadow: 0px 0px 15px 2px rgba(191, 79, 245, 0.4);
+    display: flex;
+    position: relative;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    min-width: 120px;
+    border-radius: 20px 20px 20px 20px;
+    border: #bd57ee 3px solid;
+    box-shadow: 0px 0px 15px 2px rgba(54, 20, 70, 0.4);
+    border: none
+}
+
+.tbRight{
+    justify-content: flex-start;
+    padding-left: 10px;
+}
+
+.tbLeft{
+    justify-content: flex-end;
+    padding-right: 10px;
+}
+
+.arDivR{
+    position: absolute;
+    right: -3px;
+    height: 100%;
+    border-radius: 20px 20px 20px 20px;
+}
+
+.arDivL{
+    position: absolute;
+    left: -3px;
+    height: 100%;
+    border-radius: 20px 20px 20px 20px;
+}
+
+.actB{
+    border: #bd57ee 3px solid;
+}
+
+.cursPoint{
+    cursor: pointer;
+}
