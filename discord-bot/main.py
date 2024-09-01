@@ -30,6 +30,8 @@ def get_cogs():
             logging.info(f'added {ext_name} cog to bot')
 
 
+
+
 get_cogs()
 
 bot.run(YOUR_BOT_TOKEN)
