@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Основное содержимое экрана -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.MainActivity">
+
+        <!-- nav bar -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:menu="@menu/top_app_bar"
+            app:navigationIcon="@drawable/ic_menu"
+            app:title="@string/registration"
+            app:titleCentered="true"
+            app:layout_collapseMode="pin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topAppBar"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="75dp"
+            android:layout_marginStart="75dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!--  Поле для имени  -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name"
+                app:endIconMode="clear_text"
+                app:helperTextEnabled="true"
+                app:helperText="@string/helper_text"
+                android:layout_marginBottom="15dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tf_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--  Поле для Фамилии  -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/surname"
+                app:endIconMode="clear_text"
+                app:helperTextEnabled="true"
+                app:helperText="@string/helper_text"
+                android:layout_marginBottom="15dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tf_surname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--  Поле для Отчества  -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/patronymic"
+                app:endIconMode="clear_text"
+                app:helperTextEnabled="true"
+                app:helperText="@string/helper_text"
+                android:layout_marginBottom="15dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tf_patronymic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--  Поле для ника github  -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/github_nickname"
+                app:endIconMode="clear_text"
+                app:helperTextEnabled="true"
+                app:helperText="@string/helper_text"
+                android:layout_marginBottom="15dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tf_github_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/btn_reg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/registration_button"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Навигационное меню -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/navigation_drawer" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

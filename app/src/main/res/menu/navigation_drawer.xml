@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/main_item"
+        android:title="@string/menu">
+        <menu>
+            <item
+                android:id="@+id/btn_menu_main"
+                android:checkable="true"
+                android:icon="@drawable/ic_avatar"
+                android:title="@string/main" />
+            <item
+                android:id="@+id/btn_menu_reg"
+                android:checkable="true"
+                android:icon="@drawable/ic_avatar"
+                android:title="@string/sign_in_item_menu" />
+        </menu>
+    </item>
+</menu>
