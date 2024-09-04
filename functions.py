@@ -31,21 +31,31 @@ def check_report_sections(text, required_sections):
 
 # Функция для трансформации формата имени
 def transform_name_format(name):
-    parts = name.split()
-    if len(parts) == 2:
-        last_name = parts[0]
-        initials = parts[1]
-        initials_with_space = f"{initials} {last_name}"
-        initials_without_space = f"{initials}{last_name}"
-        return initials_with_space, initials_without_space
-    return name, name
+   
+    name_parts = name.split()
+    if len(name_parts) == 3:
+        surname = name_parts[0]
+        initials = ' '.join(name_parts[1:])
+        format1 = f"{surname} {initials}"
+        format2 = f"{initials} {surname}"
+    elif len(name_parts) == 2:
+        surname = name_parts[0]
+        initials = name_parts[1]
+        format1 = f"{surname} {initials}"
+        format2 = f"{initials} {surname}"
+    else:
+        format1 = name
+        format2 = name
+    
+    return format1, format2
 
 # Функция для проверки титульной страницы
 def check_title_page(text, course_config, lab_id):
     title_text = text
     student_name, group_number = extract_student_info(title_text)
     errors = []
-
+    print(student_name)
+    
     course = course_config['course']
     course_name = course['name']
     alt_names = course['alt-names']
@@ -57,10 +67,11 @@ def check_title_page(text, course_config, lab_id):
     teacher_name = course_config['course']['staff'][1]['name']
     teacher_name = normalize_full_name(teacher_name)
     teacher_name_with_space, teacher_name_without_space = transform_name_format(teacher_name)
-    print(teacher_name)
+    
     teacher_title = course_config['course']['staff'][0]['title']
     teacher_title_no_spaces = teacher_title.replace(" ", "")
 
+    print(teacher_name)
     if student_name is None:
         errors.append(list_of_title_errors[0])
 
@@ -71,8 +82,11 @@ def check_title_page(text, course_config, lab_id):
             and course_name_upper not in title_text and not any(alt_names_upper in title_text for alt_names_upper in alt_names_upper):
         errors.append(list_of_title_errors[2])
 
-    if teacher_name not in title_text and teacher_name_with_space not in title_text and teacher_name_without_space not in title_text:
+    if (teacher_name not in title_text and 
+        teacher_name_with_space not in title_text and 
+        teacher_name_without_space not in title_text):
         errors.append(list_of_title_errors[3])
+        print(teacher_name_with_space,teacher_name_without_space)
 
     if teacher_title not in title_text and teacher_title_no_spaces not in title_text:
         errors.append(list_of_title_errors[4])
@@ -82,6 +96,7 @@ def check_title_page(text, course_config, lab_id):
     named_lab_no_spaces = named_lab.replace(" ", "")
     named_lab_caps = named_rep.upper() + "№" + str(lab_id)
     named_lab_caps_no_spaces = named_lab_caps.replace(" ", "")
+    
 
     # Проверяем наличие строки без учета пробелов
     title_text_no_spaces = title_text.replace(" ", "")
@@ -154,8 +169,13 @@ def normalize_name(name):
 
     return name  # Если ни один шаблон не подошел, возвращаем оригинальное имя
 
+import re
+
 def normalize_full_name(full_name):
-    # Удаление лишних пробелов и разбиение на части
+    if full_name is None:
+        return 'О О.О'  # Или любой другой дефолтный ответ
+
+    # Удаление пробелов, разбиение на части
     name_parts = re.sub(r'\s+', ' ', full_name).strip().split()
 
     if len(name_parts) == 3:
@@ -177,8 +197,9 @@ def normalize_full_name(full_name):
         surname = match.group(3).capitalize().strip()
         return f"{surname} {first_initial}.{middle_initial}."
     
-    # Если не подходит под шаблоны, возвращаем как есть
+    # Не подходит под шаблоны, возвращаем как есть
     return full_name
+
 
 # Основная функция для обработки PDF файла
 def process_pdf(pdf_path, course_config, lab_id):
