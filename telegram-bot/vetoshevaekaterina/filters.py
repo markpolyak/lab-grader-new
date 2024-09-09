@@ -1,27 +1,31 @@
-from telebot import types
-from telebot.callback_data import CallbackData, CallbackDataFilter
-from telebot.asyncio_filters import AdvancedCustomFilter
+import telebot
+from telebot import AdvancedCustomFilter
+from telebot.callback_data import CallbackData
 
-class CoursesCallbackFilter(AdvancedCustomFilter):
-    key='course'
+subject_factory = CallbackData("subject", prefix="subject")
+group_factory = CallbackData("subject", "group", prefix="group")
+lab_factory = CallbackData("subject", "group", "lab", prefix="lab")
 
-    async def check(self, call: types.CallbackQuery, config: CallbackDataFilter) :
+class SubjectDataFilter(AdvancedCustomFilter):
+    key = 'subject_config'
+
+    def check(self, call, config):
         return config.check(query=call)
 
-course_factory = CallbackData('course_id', prefix='course')
+class GroupDataFilter(AdvancedCustomFilter):
+    key = 'group_config'
 
-class GroupsCallbackFilter(AdvancedCustomFilter):
-    key='group'
-
-    async def check(self, call: types.CallbackQuery, config: CallbackDataFilter) :
+    def check(self, call, config):
         return config.check(query=call)
 
-groups_factory = CallbackData("course_id", "group_id", prefix='group')
+class LabDataFilter(AdvancedCustomFilter):
+    key = 'lab_config'
 
-class LabsCallbackFilter(AdvancedCustomFilter):
-    key='lab'
-
-    async def check(self, call: types.CallbackQuery, config: CallbackDataFilter) :
+    def check(self, call, config):
         return config.check(query=call)
+    
 
-labs_factory = CallbackData("course_id", "group_id", "lab_id", prefix='lab')
+def add_filters(bot):
+    bot.add_custom_filter(SubjectDataFilter())
+    bot.add_custom_filter(GroupDataFilter())
+    bot.add_custom_filter(LabDataFilter())
