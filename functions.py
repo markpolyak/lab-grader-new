@@ -109,7 +109,7 @@ def get_GitHub_username(spreadsheet_id, student_name, group_name):
     github_col_index = headers.index("GitHub") + 1  # Находим индекс колонки с GitHub
 
     student_row_index = None  
-    for row in sheet.col_values(2): 
+    for row in sheet.get_all_values(): 
         if row and row[1] == student_name: 
             student_row_index = sheet.find(student_name).row  # Получаем номер строки
             break
