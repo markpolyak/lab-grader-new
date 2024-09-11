@@ -27,22 +27,23 @@ def get_access_to_table(id_table: str) :
 
 app = FastAPI()
 
-# получения списка групп для данной дисциплины
+# get list of groups
 @app.get("/courses/{course_id}/groups")
 async def get_list_of_groups(course_id: int):
     if not is_course_real(course_id):
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
             content={
+                # "message": f"Дисциплина не найдена в списке."
                 "message": JSON_message[0]
             }
         )
 
-    # открываем нужную таблицу
+    # open needy sheet
     config_course = open_yaml_file(course_id-1)
     needy_sheet = get_access_to_table(config_course['course']['google']['spreadsheet'])
 
-    # получаем список
+    # get list of groups
     group_lists = needy_sheet.worksheets()
     groups = [ws.title for ws in group_lists]
 
@@ -54,25 +55,43 @@ async def get_list_of_groups(course_id: int):
     return groups
 
 
-# получение списка студентов группы нужной дисциплины
+# get student list of group
 @app.get("/courses/{course_id}/{group}/students")
 async def get_group_students(course_id: int,
                              group: str):
-    try:
         if not is_course_real(course_id):
             return JSONResponse(
                 status_code=status.HTTP_404_NOT_FOUND,
                 content={
+                    # "message": f"Дисциплина не найдена в списке."
                     "message": JSON_message[0]
                 }
             )
 
-        # открываем нужную таблицу
+        # open needy sheet
         config_course = open_yaml_file(course_id - 1)
         needy_sheet = get_access_to_table(config_course['course']['google']['spreadsheet'])
 
-        worksheet_group = needy_sheet.worksheet(group)
-        stud_col = config_course['course']['google']['student-name-column']
+        try:
+            worksheet_group = needy_sheet.worksheet(group)
+        except gspread.exceptions.WorksheetNotFound as e:
+            return JSONResponse(
+                status_code=status.HTTP_404_NOT_FOUND,
+                content={
+                    "message": JSON_message[1]
+                }
+            )
+
+        stud_col = ""
+        if 'student-name-column' in config_course['course']['google']:
+            stud_col = config_course['course']['google']['student-name-column']
+        else:
+            return JSONResponse(
+                status_code=status.HTTP_404_NOT_FOUND,
+                content={
+                    "message": JSON_message[11]
+                }
+            )
 
         all_values = worksheet_group.col_values(stud_col + 1)
         print(all_values)
@@ -82,15 +101,8 @@ async def get_group_students(course_id: int,
 
         return students
 
-    except gspread.exceptions.WorksheetNotFound as e:
-        return JSONResponse(
-            status_code=status.HTTP_404_NOT_FOUND,
-            content={
-                "message": JSON_message[1]
-            }
-        )
 
-#регистрация студента на курс(запись в столбцы GitHub, Telegram)
+
 @app.post("/courses/{course_id}/groups/{group_id}/register")
 async def add_github_nickname(
         course_id: int,
@@ -101,8 +113,6 @@ async def add_github_nickname(
         name: str,
         patronymic: str = "",
 ):
-    try:
-
         if is_keys_empty(surname, name, patronymic, telegram, github) :
             return JSONResponse(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -137,11 +147,29 @@ async def add_github_nickname(
         config_course = open_yaml_file(course_id - 1)
         needy_sheet = get_access_to_table(config_course['course']['google']['spreadsheet'])
 
-        worksheet_group = needy_sheet.worksheet(group_id)#если вкладка не существует, то исключение WorksheetNotFound
-        col = config_course['course']['google']['student-name-column'] + 1
+        try:
+            worksheet_group = needy_sheet.worksheet(group_id)#если вкладка не существует, то исключение WorksheetNotFound
+        except gspread.exceptions.WorksheetNotFound as e:
+            return JSONResponse(
+                status_code=status.HTTP_404_NOT_FOUND,
+                content={
+                    "message": JSON_message[9]
+                }
+            )
+        
+        col = 0
+
+        if 'student-name-column' in config_course['course']['google']:
+            col = config_course['course']['google']['student-name-column'] + 1
+        else:
+            return JSONResponse(
+                status_code=status.HTTP_404_NOT_FOUND,
+                content={
+                    "message": JSON_message[11]
+                }
+            )
 
         student_coord = worksheet_group.find(student, in_column=col)
-        print(student_coord)
 
         if student_coord is None:
             return JSONResponse(
@@ -160,7 +188,22 @@ async def add_github_nickname(
             )
 
         telegram_coord = worksheet_group.find("Telegram")#Telegram column exists?
+        if telegram_coord is None:
+            return JSONResponse(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                content={
+                    "message": JSON_message[12]
+                }
+            )
+
         github_coord = worksheet_group.find("GitHub")#если столбца не существует, то исключение CellNotFound
+        if github_coord is None:
+            return JSONResponse(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                content={
+                    "message": JSON_message[10]
+                }
+            )
 
         telegram_col = telegram_coord.col
         github_col = github_coord.col
@@ -197,21 +240,3 @@ async def add_github_nickname(
                     "message": JSON_message[8]
                 }
             )
-
-    except gspread.exceptions.WorksheetNotFound as e:
-        return JSONResponse(
-            status_code=status.HTTP_404_NOT_FOUND,
-            content={
-                "message": JSON_message[9]
-            }
-        )
-    except gspread.exceptions.CellNotFound as e:
-        return JSONResponse(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            content={
-                "message": JSON_message[10]
-            }
-        )
-
-
-
