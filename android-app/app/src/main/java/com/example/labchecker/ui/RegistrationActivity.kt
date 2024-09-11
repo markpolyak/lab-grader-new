@@ -88,10 +88,9 @@ class RegistrationActivity : AppCompatActivity() {
     private fun validateInputs(): Boolean {
         val name = binding.tfName.text.toString().trim()
         val surname = binding.tfSurname.text.toString().trim()
-        val patronymic = binding.tfPatronymic.text.toString().trim()
         val github = binding.tfGithubNickname.text.toString().trim()
 
-        return name.isNotEmpty() && surname.isNotEmpty() && patronymic.isNotEmpty() && github.isNotEmpty()
+        return name.isNotEmpty() && surname.isNotEmpty() && github.isNotEmpty()
     }
 
     override fun onBackPressed() {
@@ -103,6 +102,7 @@ class RegistrationActivity : AppCompatActivity() {
     }
     // Сохранение данных в SharedPreferences
     private fun saveUserData(name: String, surname: String, patronymic: String, github: String) {
+        println(patronymic)
         val sharedPreferences = getSharedPreferences("user_data", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putString("name", name)

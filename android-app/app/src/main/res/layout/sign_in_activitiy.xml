@@ -75,8 +75,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/patronymic"
                 app:endIconMode="clear_text"
-                app:helperTextEnabled="true"
-                app:helperText="@string/helper_text"
                 android:layout_marginBottom="15dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tf_patronymic"
