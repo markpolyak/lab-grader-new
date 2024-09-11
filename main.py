@@ -17,7 +17,6 @@ scopes = [
 creds = Credentials.from_service_account_file("credentials.json", scopes=scopes)
 client = gspread.authorize(creds)
 
-#чтение файла конфигурации
 
 #открытие таблицу по ID
 def get_access_to_table(id_table: str) :
@@ -26,26 +25,24 @@ def get_access_to_table(id_table: str) :
     return needy_sheet
 
 
-
 app = FastAPI()
 
-# get list of groups
+# получения списка групп для данной дисциплины
 @app.get("/courses/{course_id}/groups")
 async def get_list_of_groups(course_id: int):
     if not is_course_real(course_id):
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,
             content={
-                # "message": f"Дисциплина не найдена в списке."
                 "message": JSON_message[0]
             }
         )
 
-    # open needy sheet
+    # открываем нужную таблицу
     config_course = open_yaml_file(course_id-1)
     needy_sheet = get_access_to_table(config_course['course']['google']['spreadsheet'])
 
-    # get list of groups
+    # получаем список
     group_lists = needy_sheet.worksheets()
     groups = [ws.title for ws in group_lists]
 
@@ -57,7 +54,7 @@ async def get_list_of_groups(course_id: int):
     return groups
 
 
-# get student list of group
+# получение списка студентов группы нужной дисциплины
 @app.get("/courses/{course_id}/{group}/students")
 async def get_group_students(course_id: int,
                              group: str):
@@ -66,12 +63,11 @@ async def get_group_students(course_id: int,
             return JSONResponse(
                 status_code=status.HTTP_404_NOT_FOUND,
                 content={
-                    # "message": f"Дисциплина не найдена в списке."
                     "message": JSON_message[0]
                 }
             )
 
-        # open needy sheet
+        # открываем нужную таблицу
         config_course = open_yaml_file(course_id - 1)
         needy_sheet = get_access_to_table(config_course['course']['google']['spreadsheet'])
 
@@ -94,7 +90,7 @@ async def get_group_students(course_id: int,
             }
         )
 
-
+#регистрация студента на курс(запись в столбцы GitHub, Telegram)
 @app.post("/courses/{course_id}/groups/{group_id}/register")
 async def add_github_nickname(
         course_id: int,
