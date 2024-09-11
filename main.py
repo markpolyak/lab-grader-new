@@ -92,7 +92,7 @@ async def download_pdf(org: str, repo: str, github_username: str):
         pdf_response = requests.get(pdf_file, auth=HTTPBasicAuth(github_username, GITHUB_TOKEN))
 
         if pdf_response.status_code == 200:
-            save_path = "tmp/upload_report.pdf"  
+            save_path = f"tmp/{repo}.pdf"  
             with open(save_path, 'wb') as file:
                 file.write(pdf_response.content)  # сохраняем файл на диск
             return {"message": "Файл успешно загружен", "save_path": save_path}
