@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">LabChecker</string>
+    <string name="find_tasks">Поиск работ</string>
+    <string name="check">Проверить</string>
+    <string name="registration">Регистрация</string>
+    <string name="checked">Проверенные</string>
+    <string name="sign_in_item_menu">Войти</string>
+    <string name="sign_in_item_menu_desc">Пункт меню, войти</string>
+    <string name="menu">Меню</string>
+    <string name="name">Имя</string>
+    <string name="helper_text">*обязательное поле</string>
+    <string name="surname">Фамилия</string>
+    <string name="patronymic">Отчество</string>
+    <string name="github_nickname">Ник GitHub</string>
+    <string name="registration_button">Зарегистрироваться</string>
+    <string name="main">Главная</string>
+    <string name="subjects">Предметы</string>
+    <string name="group">Группа</string>
+    <string name="grade">grade</string>
+</resources>

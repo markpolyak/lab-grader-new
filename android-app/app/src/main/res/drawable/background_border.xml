@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Цвет фона -->
+    <solid  />
+
+    <!-- Обводка -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/material_on_surface_stroke" />
+
+    <!-- Скругление углов (необязательно) -->
+    <corners android:radius="8dp" />
+
+    <!-- Внутренние отступы (необязательно) -->
+    <padding
+        android:left="4dp"
+        android:top="4dp"
+        android:right="4dp"
+        android:bottom="4dp" />
+</shape>
